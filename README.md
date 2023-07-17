@@ -1,16 +1,19 @@
-# adkosh
+# ADKosh
+A Nepali Dictionary (एउटा नेपाली शब्दकोश)
+This is a Work In Progress
 
-A new Flutter project.
+## Features:
+1. Normal Word Search (शब्दको अर्थको खोजी)
+2. Rhyme Search (अन्त्यानुप्रास मिल्ने शब्दको खोजी)
+3. Random Word Shuffle (र्याण्डम शब्दको विबरण)
+4. Favorite Word (मन परेको शब्दलाई चिन्ह लगाउन मिल्ने)
+
+## Features coming soon:
+* Word of the day as a Notification
+* Nepali Grammar Rules and Lessons
+* Nepali Literature Guide
+* And so much more
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+WIP
