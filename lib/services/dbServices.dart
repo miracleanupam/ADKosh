@@ -106,4 +106,14 @@ class DBService {
     List<Map<String, dynamic>> res = await db.rawQuery('''select favourite from corpora where id =?''', [id]);
     return getAsBool(res[0]['favourite']);
   }
+
+  Future<List<Corpora>> getAllFavorites() async {
+    Database db = await instance.database;
+
+    List<Map<String, dynamic>> list = await db.rawQuery('''select * from corpora where favourite == 1''');
+
+    return List.generate(list.length, (index) {
+      return Corpora(id: list[index]['id'], word: list[index]['word'],);
+    });
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:adkosh/screens/drawer.dart';
 import 'package:adkosh/screens/random.dart';
 import 'package:adkosh/screens/search.dart';
 import 'package:adkosh/screens/searchRhyme.dart';
@@ -16,10 +17,6 @@ class _DashboardState extends State<Dashboard> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     Search(),
-    // Text(
-    //   'Index 1: Business',
-    //   style: optionStyle,
-    // ),
     SearchRhyme(),
     RandomScreen(),
   ];
@@ -32,6 +29,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: ADDrawer(),
       appBar: AppBar(
         title: const Text('ADकोश'),
       ),
