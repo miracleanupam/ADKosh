@@ -64,14 +64,16 @@ class Artha {
 class Random {
   final String word;
   final List<Artha> arthas;
+  final int corpora_id;
 
   const Random({
     required this.word,
+    required this.corpora_id,
     required this.arthas,
   });
 
   Map<String, dynamic> toMap() {
-    return {'word': word, 'arthas': arthas};
+    return {'word': word, 'arthas': arthas, 'corpora_id': corpora_id};
   }
 
   String toString() {
@@ -106,8 +108,6 @@ class DBService {
     var exists = await databaseExists(path);
 
     if (!exists) {
-      print('Create new copy from assets');
-
       try {
         await Directory(dirname(path)).create(recursive: true);
       } catch (_) {}
@@ -118,8 +118,6 @@ class DBService {
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
       await File(path).writeAsBytes(bytes, flush: true);
-    } else {
-      print('Opening existing database');
     }
 
     return await openDatabase(path);
@@ -128,15 +126,8 @@ class DBService {
   Future<List<Corpora>> getWordSearchList({term = '', rhymes = false}) async {
     Database db = await instance.database;
 
-    // print(term);
-    // print("Rhyming");
-    // print(rhymes);
-
     List<Map<String, dynamic>> list = rhymes ? await db.rawQuery('select * from corpora where word like ?', ['%$term']) : await db.rawQuery(
         'select * from corpora where word like ? limit 2000', ['$term%']);
-
-    // print('\n\n\n');
-    // print(list);
 
     return List.generate(list.length, (index) {
       return Corpora(id: list[index]['id'], word: list[index]['word'],);
@@ -150,7 +141,6 @@ class DBService {
         'select * from meanings where corpora_id == ?', [corpora_id]);
 
     return List.generate(list.length, (index) {
-      // print(list[index]);
       return Artha(
           id: list[index]['id'],
           grammar: list[index]['grammar'] ?? '',
@@ -168,6 +158,7 @@ class DBService {
 
     return Random(
         word: randomWordMeaning[0]['word'],
+        corpora_id: randomWordMeaning[0]['corpora_id'],
         arthas: List.generate(randomWordMeaning.length, (index) {
           return Artha(
               id: randomWordMeaning[index]['m_id'],
@@ -191,7 +182,6 @@ class DBService {
     Database db = await instance.database;
 
     List<Map<String, dynamic>> res = await db.rawQuery('''select favourite from corpora where id =?''', [id]);
-
     return getAsBool(res[0]['favourite']);
   }
 }
@@ -315,7 +305,6 @@ class _SearchState extends State<Search> {
 
     List<Corpora> res = await DBService.instance.getWordSearchList(term: '');
 
-    // print(res);
 
     res.length > 0
         ? setState(() {
@@ -333,11 +322,6 @@ class _SearchState extends State<Search> {
   }
 
   void _printLatestValue() async {
-    // print('${searchController.text}');
-
-    // if (searchController.text.isEmpty) {
-    //   List<Corpora> res = await DBService.instance.getWordSearchList()
-    // }
     List<Corpora> res =
         await DBService.instance.getWordSearchList(term: searchController.text);
 
@@ -435,11 +419,6 @@ class _SearchRhymeState extends State<SearchRhyme> {
   }
 
   void _printLatestValue() async {
-    // print('${searchController.text}');
-
-    // if (searchController.text.isEmpty) {
-    //   List<Corpora> res = await DBService.instance.getWordSearchList()
-    // }
     List<Corpora> res =
         await DBService.instance.getWordSearchList(term: searchController.text, rhymes: true);
 
@@ -533,31 +512,38 @@ class _MeaningState extends State<Meaning> {
   }
 
   void initializeProcess() async {
-    bool res = await DBService.instance.isFavourite(id: widget.id);
-    setState(() {
-      favourite = res;
-    });
     widget.random ? retrieveRandomWordMeanings() : retrieveMeanings();
   }
 
-  void retrieveMeanings() async {
+   retrieveMeanings() async {
     List<Artha> res =
         await DBService.instance.getWordMeanings(corpora_id: widget.id);
-    // print(res);
     setState(() {
       items = res;
+    });
+    doFavoriteStuff();
+  }
+
+  void doFavoriteStuff() async {
+    bool fav = await DBService.instance.isFavourite(id: widget.id);
+    setState(() {
+      favourite = fav;
     });
   }
 
   void retrieveRandomWordMeanings() async {
     Random res = await DBService.instance.getRandomWord();
-    // print(res);
+    // bool fav = await DBService.instance.isFavourite(id: res.corpora_id);
 
     widget.word = res.word;
+    widget.id = res.corpora_id;
 
     setState(() {
       items = res.arthas;
+      // favourite = fav;
     });
+    doFavoriteStuff();
+
   }
 
   void toggleFavourite() async {
@@ -588,8 +574,6 @@ class _MeaningState extends State<Meaning> {
   }
 
   String getGrammarEtymologyString(grammar, etymology) {
-    // print(grammar);
-    // print(etymology);
     if (grammar == '' && etymology == '') {
       return '';
     } else if (grammar == '') {
