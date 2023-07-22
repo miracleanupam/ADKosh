@@ -10,14 +10,11 @@ class ADDrawer extends StatefulWidget {
 }
 
 class _ADDrawerState extends State<ADDrawer> {
-  int currentSelection = 0;
+  String currentSelection = "favs";
   @override
   void initState() {
     super.initState();
     print("initialize vayo");
-    setState(() {
-      currentSelection = 0;
-    });
   }
 
   @override
@@ -30,7 +27,11 @@ class _ADDrawerState extends State<ADDrawer> {
           ),
           ListTile(
             title: Text('फेभरेट शब्दहरु'),
+            selected: currentSelection == 'favs',
             onTap: () {
+                setState(() {
+                currentSelection = "favs";
+              });
               Navigator.pop(context);
               Navigator.push(context, MaterialPageRoute(builder: (context) => Favourites()));
             },
