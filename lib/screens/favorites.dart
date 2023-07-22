@@ -31,6 +31,16 @@ class _FavouritesState extends State<Favourites> {
     });
   }
 
+  void removeWord(cor) {
+    List<Corpora> tempItems = items;
+    tempItems.removeWhere((el) {
+      return el.id == cor;
+    });
+    setState(() {
+      items = tempItems;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,10 +56,14 @@ class _FavouritesState extends State<Favourites> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(items[index].word),
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    final unfavourited_word = await Navigator.push(
                       context, MaterialPageRoute(builder: (context) => Meaning(id: items[index].id, word: items[index].word,))
                     );
+
+                    if (unfavourited_word != 0) {
+                      removeWord(unfavourited_word);
+                    }
                   },
                 );
               },

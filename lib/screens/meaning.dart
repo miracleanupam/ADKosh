@@ -17,6 +17,7 @@ class Meaning extends StatefulWidget {
 class _MeaningState extends State<Meaning> {
   List<Artha> items = [];
   bool favourite = false;
+  int removeFromFavs = 0;
 
   @override
   void initState() {
@@ -62,6 +63,11 @@ class _MeaningState extends State<Meaning> {
 
   void toggleFavourite() async {
     await DBService.instance.toggleFavourite(id: widget.id);
+    if (favourite) {
+      setState(() {
+        removeFromFavs = widget.id;
+      });
+    }
     setState(() {
       favourite = !favourite;
     });
@@ -113,7 +119,7 @@ class _MeaningState extends State<Meaning> {
       appBar: widget.random ? null :AppBar(
         title: Text('Go back'),
       ),
-      body: Column(
+      body: WillPopScope(child: Column(
         children: [
           SelectableText('${widget.id}'),
           SelectableText('${widget.word}'),
@@ -133,7 +139,10 @@ class _MeaningState extends State<Meaning> {
           if (widget.random) shuffleButton(),
           favouriteButton(),
         ],
-      ),
+      ), onWillPop: () async {
+        Navigator.pop(context, removeFromFavs);
+        return false;
+      })
     );
   }
 }
