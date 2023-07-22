@@ -48,7 +48,7 @@ class _DashboardState extends State<Dashboard> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shuffle),
-            label: 'र्यान्डम',
+            label: 'र्‍याण्डम',
           ),
         ],
         currentIndex: _selectedIndex,
