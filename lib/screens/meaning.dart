@@ -2,6 +2,7 @@ import 'package:adkosh/models/artha.dart';
 import 'package:adkosh/models/random.dart';
 import 'package:adkosh/services/dbServices.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Meaning extends StatefulWidget {
   int id;
@@ -48,7 +49,6 @@ class _MeaningState extends State<Meaning> {
 
   void retrieveRandomWordMeanings() async {
     Random res = await DBService.instance.getRandomWord();
-    // bool fav = await DBService.instance.isFavourite(id: res.corpora_id);
 
     widget.word = res.word;
     widget.id = res.corpora_id;
@@ -74,21 +74,51 @@ class _MeaningState extends State<Meaning> {
   }
 
   Widget shuffleButton() {
-    return Center(
-            child: ElevatedButton(
-              onPressed: () {
-                retrieveRandomWordMeanings();
-              },
-              child: Text('Shuffle'),
-            ),
-          );
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+      child: ElevatedButton(
+        onPressed: () {
+          retrieveRandomWordMeanings();
+        },
+        child: Icon(Icons.loop),
+        // child: Text('अर्को', style: TextStyle(fontSize: 20),),
+      ),
+    );
   }
 
   Widget favouriteButton() {
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 0, 4 ,0),
       child: ElevatedButton(
         onPressed: () { toggleFavourite(); },
         child: favourite ?  Icon(Icons.favorite) : Icon(Icons.favorite_border),
+      ),
+    );
+  }
+
+  String buildShareText() {
+    String textToReturn = widget.word + "\n";
+    for (var i=0; i<items.length; i++) {
+      textToReturn += getGrammarEtymologyString(items[i].grammar, items[i].etymology);
+      textToReturn += '\n';
+      textToReturn += items[i].senses.join("\n");
+      textToReturn += "\n";
+    }
+    return textToReturn;
+  }
+
+  Widget shareButton() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 0, 4 ,0),
+      child: ElevatedButton(
+        onPressed: () {
+          // print(buildShareText());
+          Share.share(
+            buildShareText(),
+            subject: "यो शब्द सहि लाग्यो",
+          );
+        },
+        child: Icon(Icons.share),
       ),
     );
   }
@@ -121,23 +151,45 @@ class _MeaningState extends State<Meaning> {
       ),
       body: WillPopScope(child: Column(
         children: [
-          SelectableText('${widget.id}'),
-          SelectableText('${widget.word}'),
+          // SelectableText('${widget.id}'),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
+            child: SelectableText('${widget.word}', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),),
+          ),
           Expanded(
-              child: ListView.builder(
+              child: ListView.separated(
             itemCount: items.length,
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(getGrammarEtymologyString(
-                    items[index].grammar, items[index].etymology)),
+                title: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(getGrammarEtymologyString(
+                      items[index].grammar, items[index].etymology),
+                      style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500, color: Colors.black54),
+                    ),
+                ),
                 subtitle: Column(
-                  children: items[index].senses.map((e) => SelectableText(e)).toList(),
+                  children: items[index].senses.map((e) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SelectableText(e, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.black87),),
+                  )).toList(),
                 ),
               );
             },
+            separatorBuilder: (context, index) {
+              return Divider(thickness: 2, indent: 5, endIndent: 5,);
+            },
           )),
-          if (widget.random) shuffleButton(),
-          favouriteButton(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              favouriteButton(),
+              if (widget.random) shuffleButton(),
+              shareButton(),
+            ],
+          )
+          // if (widget.random) shuffleButton(),
+          // favouriteButton(),
         ],
       ), onWillPop: () async {
         Navigator.pop(context, removeFromFavs);

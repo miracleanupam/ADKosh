@@ -2,7 +2,10 @@ import 'package:adkosh/screens/drawer.dart';
 import 'package:adkosh/screens/random.dart';
 import 'package:adkosh/screens/search.dart';
 import 'package:adkosh/screens/searchRhyme.dart';
+import 'package:adkosh/theme/themeManager.dart';
 import 'package:flutter/material.dart';
+
+ThemeManager _themeManager = ThemeManager();
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -20,6 +23,27 @@ class _DashboardState extends State<Dashboard> {
     SearchRhyme(),
     RandomScreen(),
   ];
+
+  @override
+  void initState() {
+    _themeManager.addListener(themeListener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _themeManager.removeListener(themeListener);
+    super.dispose();
+  }
+
+  themeListener() {
+    if(mounted) {
+      setState(() {
+        print("Dash theme listener ");
+      });
+    }
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -32,6 +56,10 @@ class _DashboardState extends State<Dashboard> {
       drawer: ADDrawer(),
       appBar: AppBar(
         title: const Text('ADकोश'),
+        actions: [Switch(value: _themeManager.themeMode == ThemeMode.dark, onChanged: (newValue) {
+          print("TUrning on/off dark theme with switch");
+          _themeManager.toggleTheme(newValue);
+        },)],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),

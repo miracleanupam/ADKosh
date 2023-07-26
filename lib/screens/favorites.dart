@@ -51,11 +51,11 @@ class _FavouritesState extends State<Favourites> {
       body: Column(
         children: [
           items.length > 0 ? Expanded(
-            child: ListView.builder(
+            child: ListView.separated(
               itemCount: items.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(items[index].word),
+                  title: Text(items[index].word, style: TextStyle(fontSize: 20),),
                   onTap: () async {
                     final unfavourited_word = await Navigator.push(
                       context, MaterialPageRoute(builder: (context) => Meaning(id: items[index].id, word: items[index].word,))
@@ -66,6 +66,9 @@ class _FavouritesState extends State<Favourites> {
                     }
                   },
                 );
+              },
+              separatorBuilder: (context, index) {
+                return Divider(indent: 8, endIndent: 8,);
               },
             ),
           ) : Placeholder()

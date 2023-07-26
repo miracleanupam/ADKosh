@@ -44,7 +44,7 @@ class _SearchState extends State<Search> {
 
   void _printLatestValue() async {
     List<Corpora> res =
-        await DBService.instance.getWordSearchList(term: searchController.text);
+        await DBService.instance.getWordSearchList(term: searchController.text.trim());
 
     // print(res);
 
@@ -65,21 +65,26 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'यहाँ शब्दको अर्थ खोज्नुहोस्...',
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'यहाँ शब्दको अर्थ खोज्नुहोस्...',
+            ),
+            style: TextStyle(fontSize: 20),
+            controller: searchController,
+            onSubmitted: ((value) => _handleSubmit()),
           ),
-          controller: searchController,
-          onSubmitted: ((value) => _handleSubmit()),
         ),
         items.length > 0
             ? Expanded(
-                child: ListView.builder(
+                child: ListView.separated(
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(items[index].word),
+                      // tileColor: index.isEven || index == 0 ? Colors.grey[300] : Colors.white,
+                      title: Text(items[index].word, style: TextStyle(fontSize: 20),),
                       onTap: () {
                         Navigator.push(
                             context,
@@ -89,6 +94,9 @@ class _SearchState extends State<Search> {
                             ));
                       },
                     );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(indent: 8, endIndent: 8,);
                   },
                 ),
               )
