@@ -147,7 +147,7 @@ class _MeaningState extends State<Meaning> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: widget.random ? null :AppBar(
-        title: Text('Go back'),
+        title: Text('अगाडिको'),
       ),
       body: WillPopScope(child: Column(
         children: [
@@ -165,13 +165,13 @@ class _MeaningState extends State<Meaning> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(getGrammarEtymologyString(
                       items[index].grammar, items[index].etymology),
-                      style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500, color: Colors.black54),
+                      style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500, color: Theme.of(context).brightness == Brightness.dark ? Colors.white38 : Colors.black54),
                     ),
                 ),
                 subtitle: Column(
                   children: items[index].senses.map((e) => Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: SelectableText(e, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.black87),),
+                    child: SelectableText(e, textAlign: TextAlign.center, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Theme.of(context).brightness == Brightness.dark ? Colors.white70 : Colors.black87),),
                   )).toList(),
                 ),
               );

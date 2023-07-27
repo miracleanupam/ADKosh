@@ -101,15 +101,15 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       drawer: ADDrawer(),
       appBar: AppBar(
         title: const Text('ADकोश'),
-        actions: [Switch(value: _themeManager.themeMode == ThemeMode.dark, onChanged: (newValue) {
-          print("TUrning on/off dark theme with switch");
-          print(newValue);
-          print(_themeManager.themeMode);
-          _themeManager.toggleTheme(newValue);
-        },)],
+        actions: [
+          IconButton(onPressed: () {
+            _themeManager.toggleTheme(_themeManager.themeMode == ThemeMode.dark ? false : true);
+          }, icon: Icon(_themeManager.themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,))
+        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
