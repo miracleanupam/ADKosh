@@ -23,10 +23,8 @@ class _SearchRhymeState extends State<SearchRhyme> {
   }
 
   void setInitialItems() async {
-
-    List<Corpora> res = await DBService.instance.getWordSearchList(term: '', rhymes: true);
-
-    // print(res);
+    List<Corpora> res =
+        await DBService.instance.getWordSearchList(term: '', rhymes: true);
 
     res.length > 0
         ? setState(() {
@@ -44,10 +42,8 @@ class _SearchRhymeState extends State<SearchRhyme> {
   }
 
   void _printLatestValue() async {
-    List<Corpora> res =
-        await DBService.instance.getWordSearchList(term: searchController.text, rhymes: true);
-
-    // print(res);
+    List<Corpora> res = await DBService.instance
+        .getWordSearchList(term: searchController.text, rhymes: true);
 
     res.length > 0
         ? setState(() {
@@ -58,9 +54,9 @@ class _SearchRhymeState extends State<SearchRhyme> {
           });
   }
 
-  void _handleSubmit() {
-    print('Submitted the value: ${searchController.text.trim()}');
-  }
+  // void _handleSubmit() {
+  //   print('Submitted the value: ${searchController.text.trim()}');
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +71,7 @@ class _SearchRhymeState extends State<SearchRhyme> {
             ),
             style: TextStyle(fontSize: 20),
             controller: searchController,
-            onSubmitted: ((value) => _handleSubmit()),
+            // onSubmitted: ((value) => _handleSubmit()),
           ),
         ),
         items.length > 0
@@ -84,7 +80,10 @@ class _SearchRhymeState extends State<SearchRhyme> {
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(items[index].word, style: TextStyle(fontSize: 20),),
+                      title: Text(
+                        items[index].word,
+                        style: TextStyle(fontSize: 20),
+                      ),
                       onTap: () {
                         Navigator.push(
                             context,
@@ -96,7 +95,10 @@ class _SearchRhymeState extends State<SearchRhyme> {
                     );
                   },
                   separatorBuilder: (context, index) {
-                    return Divider(indent: 8, endIndent: 8,);
+                    return Divider(
+                      indent: 8,
+                      endIndent: 8,
+                    );
                   },
                 ),
               )

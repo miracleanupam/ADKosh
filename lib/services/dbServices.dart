@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-
 class DBService {
   DBService._privateConstructor();
   static final DBService instance = DBService._privateConstructor();
@@ -48,19 +47,25 @@ class DBService {
   Future<List<Corpora>> getWordSearchList({term = '', rhymes = false}) async {
     Database db = await instance.database;
 
-    List<Map<String, dynamic>> list = rhymes ? await db.rawQuery('select * from corpora where word like ?', ['%$term']) : await db.rawQuery(
-        'select * from corpora where word like ? limit 2000', ['$term%']);
+    List<Map<String, dynamic>> list = rhymes
+        ? await db
+            .rawQuery('select * from corpora where word like ?', ['%$term'])
+        : await db.rawQuery(
+            'select * from corpora where word like ? limit 2000', ['$term%']);
 
     return List.generate(list.length, (index) {
-      return Corpora(id: list[index]['id'], word: list[index]['word'],);
+      return Corpora(
+        id: list[index]['id'],
+        word: list[index]['word'],
+      );
     });
   }
 
   Future<List<Artha>> getWordMeanings({corpora_id}) async {
     Database db = await instance.database;
 
-    List<Map<String, dynamic>> list = await db.rawQuery(
-        'select * from meanings where corpora_id == ?', [corpora_id]);
+    List<Map<String, dynamic>> list = await db
+        .rawQuery('select * from meanings where corpora_id == ?', [corpora_id]);
 
     return List.generate(list.length, (index) {
       return Artha(
@@ -96,24 +101,29 @@ class DBService {
     Database db = await instance.database;
 
     var res = await db.rawUpdate(
-      '''update corpora set favourite = (1 - favourite) where id = ?''', [id]
-    );
+        '''update corpora set favourite = (1 - favourite) where id = ?''',
+        [id]);
   }
 
   Future<bool> isFavourite({id}) async {
     Database db = await instance.database;
 
-    List<Map<String, dynamic>> res = await db.rawQuery('''select favourite from corpora where id =?''', [id]);
+    List<Map<String, dynamic>> res = await db
+        .rawQuery('''select favourite from corpora where id =?''', [id]);
     return getAsBool(res[0]['favourite']);
   }
 
   Future<List<Corpora>> getAllFavorites() async {
     Database db = await instance.database;
 
-    List<Map<String, dynamic>> list = await db.rawQuery('''select * from corpora where favourite == 1''');
+    List<Map<String, dynamic>> list =
+        await db.rawQuery('''select * from corpora where favourite == 1''');
 
     return List.generate(list.length, (index) {
-      return Corpora(id: list[index]['id'], word: list[index]['word'],);
+      return Corpora(
+        id: list[index]['id'],
+        word: list[index]['word'],
+      );
     });
   }
 }

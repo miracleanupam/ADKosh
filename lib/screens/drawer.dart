@@ -19,34 +19,41 @@ class _ADDrawerState extends State<ADDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        children: [
-          DrawerHeader(
-            child: Container(
+        child: ListView(
+      children: [
+        DrawerHeader(
+          child: Container(
               alignment: Alignment.centerLeft,
-              child: Text('अझ धेरै विकल्पहरु!!', style: TextStyle(fontSize: 20),)),
+              child: Text(
+                'अझ धेरै विकल्पहरु!!',
+                style: TextStyle(fontSize: 20),
+              )),
+        ),
+        ListTile(
+          leading: Icon(Icons.favorite_outline),
+          title: Text(
+            'फेभरेट शब्दहरु',
+            style: TextStyle(fontSize: 20),
           ),
-          ListTile(
-            leading: Icon(Icons.favorite_outline),
-            title: Text('फेभरेट शब्दहरु', style: TextStyle(fontSize: 20),),
-            selected: currentSelection == 'favs',
-            onTap: () {
-                setState(() {
-                currentSelection = "favs";
-              });
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Favourites()));
-            },
-          ),
-          Divider(),
-          ListTile(
-            title: Text('अझ धेरै छिट्टै आउँदैछ!!', style: TextStyle(fontSize: 20, color: Colors.black45)),
-            onTap: () {
-              
-            },
-          )
-        ],
-      )
-    );
+          selected: currentSelection == 'favs',
+          onTap: () {
+            setState(() {
+              currentSelection = "favs";
+            });
+            Navigator.pop(context);
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Favourites()));
+          },
+        ),
+        Divider(),
+        ListTile(
+          title: Text('अझ धेरै छिट्टै आउँदैछ!!',
+              style: TextStyle(
+                fontSize: 20,
+              )),
+          onTap: () {},
+        )
+      ],
+    ));
   }
 }

@@ -46,8 +46,6 @@ class _SearchState extends State<Search> {
     List<Corpora> res =
         await DBService.instance.getWordSearchList(term: searchController.text.trim());
 
-    // print(res);
-
     res.length > 0
         ? setState(() {
             items = res;
@@ -57,9 +55,9 @@ class _SearchState extends State<Search> {
           });
   }
 
-  void _handleSubmit() {
-    print('Submitted the value: ${searchController.text}');
-  }
+  // void _handleSubmit() {
+  //   print('Submitted the value: ${searchController.text}');
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +72,7 @@ class _SearchState extends State<Search> {
             ),
             style: TextStyle(fontSize: 20),
             controller: searchController,
-            onSubmitted: ((value) => _handleSubmit()),
+            // onSubmitted: ((value) => _handleSubmit()),
           ),
         ),
         items.length > 0

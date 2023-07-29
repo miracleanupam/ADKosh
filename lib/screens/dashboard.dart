@@ -37,7 +37,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   themeListener() {
-    if(mounted) {
+    if (mounted) {
       setState(() {
         print("Dash theme listener ");
       });
@@ -56,10 +56,15 @@ class _DashboardState extends State<Dashboard> {
       drawer: ADDrawer(),
       appBar: AppBar(
         title: const Text('ADकोश'),
-        actions: [Switch(value: _themeManager.themeMode == ThemeMode.dark, onChanged: (newValue) {
-          print("TUrning on/off dark theme with switch");
-          _themeManager.toggleTheme(newValue);
-        },)],
+        actions: [
+          Switch(
+            value: _themeManager.themeMode == ThemeMode.dark,
+            onChanged: (newValue) {
+              print("TUrning on/off dark theme with switch");
+              _themeManager.toggleTheme(newValue);
+            },
+          )
+        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),

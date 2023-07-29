@@ -35,12 +35,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   themeListener() {
-    if(mounted) {
-      setState(() {
-        print('main ko theme listener bata');
-      });
+    if (mounted) {
+      setState(() {});
     }
   }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -85,10 +84,8 @@ class _DashboardState extends State<Dashboard> {
   }
 
   themeListener() {
-    if(mounted) {
-      setState(() {
-        print("Dash theme listener ");
-      });
+    if (mounted) {
+      setState(() {});
     }
   }
 
@@ -106,9 +103,16 @@ class _DashboardState extends State<Dashboard> {
       appBar: AppBar(
         title: const Text('ADकोश'),
         actions: [
-          IconButton(onPressed: () {
-            _themeManager.toggleTheme(_themeManager.themeMode == ThemeMode.dark ? false : true);
-          }, icon: Icon(_themeManager.themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,))
+          IconButton(
+              onPressed: () {
+                _themeManager.toggleTheme(
+                    _themeManager.themeMode == ThemeMode.dark ? false : true);
+              },
+              icon: Icon(
+                _themeManager.themeMode == ThemeMode.dark
+                    ? Icons.light_mode
+                    : Icons.dark_mode,
+              ))
         ],
       ),
       body: Center(

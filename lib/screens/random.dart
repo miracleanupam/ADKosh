@@ -11,6 +11,8 @@ class RandomScreen extends StatefulWidget {
 class _RandomScreenState extends State<RandomScreen> {
   @override
   Widget build(BuildContext context) {
-    return Meaning(random: true,);
+    return Meaning(
+      random: true,
+    );
   }
 }
