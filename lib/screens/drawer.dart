@@ -1,4 +1,5 @@
 import 'package:adkosh/screens/favorites.dart';
+import 'package:adkosh/screens/index.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
@@ -43,6 +44,23 @@ class _ADDrawerState extends State<ADDrawer> {
             Navigator.pop(context);
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Favourites()));
+          },
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.list_alt_outlined),
+          title: Text(
+            'सङ्केतसूची',
+            style: TextStyle(fontSize: 20),
+          ),
+          selected: currentSelection == 'idxs',
+          onTap: () {
+            setState(() {
+              currentSelection = "idxs";
+            });
+            Navigator.pop(context);
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => IndexScreen()));
           },
         ),
         Divider(),
