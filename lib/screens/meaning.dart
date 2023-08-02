@@ -2,6 +2,7 @@ import 'package:adkosh/models/artha.dart';
 import 'package:adkosh/models/random.dart';
 import 'package:adkosh/services/dbServices.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
 class Meaning extends StatefulWidget {
@@ -77,6 +78,7 @@ class _MeaningState extends State<Meaning> {
       padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
       child: ElevatedButton(
         onPressed: () {
+          HapticFeedback.mediumImpact();
           retrieveRandomWordMeanings();
         },
         child: Icon(Icons.loop),
@@ -91,6 +93,7 @@ class _MeaningState extends State<Meaning> {
       child: ElevatedButton(
         onPressed: () {
           toggleFavourite();
+          HapticFeedback.mediumImpact();
         },
         child: favourite ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
       ),
@@ -114,6 +117,7 @@ class _MeaningState extends State<Meaning> {
       padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
       child: ElevatedButton(
         onPressed: () {
+          HapticFeedback.mediumImpact();
           Share.share(
             buildShareText(),
             subject: "यो शब्द सहि लाग्यो",

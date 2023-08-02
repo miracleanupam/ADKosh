@@ -2,6 +2,7 @@ import 'package:adkosh/models/corpora.dart';
 import 'package:adkosh/screens/meaning.dart';
 import 'package:adkosh/services/dbServices.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Favourites extends StatefulWidget {
   const Favourites({super.key});
@@ -61,6 +62,7 @@ class _FavouritesState extends State<Favourites> {
                           style: TextStyle(fontSize: 20),
                         ),
                         onTap: () async {
+                          HapticFeedback.mediumImpact();
                           final unfavourited_word = await Navigator.push(
                               context,
                               MaterialPageRoute(
