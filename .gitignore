@@ -830,6 +830,7 @@ Temporary Items
 # Used by previous versions of JEnv
 .jenv-version
 
+shabda.sqlite3
 
 ### ------------------------- Project Specific ------------------------- ###
 
