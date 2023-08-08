@@ -27,6 +27,10 @@ ThemeData lightTheme = ThemeData(
     backgroundColor:
         MaterialStateColor.resolveWith((states) => Colors.blueGrey),
   )),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    selectedItemColor: Colors.black,
+    unselectedItemColor: Colors.black,
+  )
 );
 
 ThemeData darkTheme = ThemeData(
@@ -56,4 +60,8 @@ ThemeData darkTheme = ThemeData(
     backgroundColor:
         MaterialStateColor.resolveWith((states) => Colors.blueGrey),
   )),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    selectedItemColor: Colors.white,
+    unselectedItemColor: Colors.white,
+  )
 );
