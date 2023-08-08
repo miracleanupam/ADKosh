@@ -49,7 +49,7 @@ class DBService {
 
     List<Map<String, dynamic>> list = rhymes
         ? await db
-            .rawQuery('select * from corpora where word like ?', ['%$term'])
+            .rawQuery('select * from corpora where word like ? limit 2000', [term.isEmpty ? '%' : term])
         : await db.rawQuery(
             'select * from corpora where word like ? limit 2000', ['$term%']);
 

@@ -17,7 +17,7 @@ class _SearchRhymeState extends State<SearchRhyme> {
   @override
   void initState() {
     super.initState();
-    searchController.addListener(_printLatestValue);
+    searchController.addListener(_dbConnector);
 
     setInitialItems();
   }
@@ -41,7 +41,7 @@ class _SearchRhymeState extends State<SearchRhyme> {
     super.dispose();
   }
 
-  void _printLatestValue() async {
+  void _dbConnector() async {
     List<Corpora> res = await DBService.instance
         .getWordSearchList(term: searchController.text, rhymes: true);
 
@@ -60,6 +60,7 @@ class _SearchRhymeState extends State<SearchRhyme> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<TooltipState> tooltipkey = GlobalKey<TooltipState>();
     return Column(
       children: [
         Padding(
@@ -68,10 +69,15 @@ class _SearchRhymeState extends State<SearchRhyme> {
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'यहाँ शब्दको अर्थ खोज्नुहोस्...',
+              suffixIcon: Tooltip(
+                key: tooltipkey,
+                triggerMode: TooltipTriggerMode.tap,
+                showDuration: Duration(seconds: 10),
+                message: '% - शून्य वा बढी वर्ण वा मात्रा \n _ - एउटा वर्ण वा मात्रा \n उदाहरण: \n %ाम - राम, आराम, बिराम, अछाम, इनाम ... \n म% - मल, मकल, मकुन्द, मखमा ... \n र_म - रकम, राम, रसम, रोम ...',
+                child: Icon(Icons.info_outline),)
             ),
             style: TextStyle(fontSize: 20),
             controller: searchController,
-            // onSubmitted: ((value) => _handleSubmit()),
           ),
         ),
         items.length > 0
