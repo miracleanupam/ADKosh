@@ -1,4 +1,6 @@
 import 'package:adkosh/screens/drawer.dart';
+import 'package:adkosh/screens/favorites.dart';
+import 'package:adkosh/screens/index.dart';
 import 'package:adkosh/screens/random.dart';
 import 'package:adkosh/screens/search.dart';
 import 'package:adkosh/screens/searchRhyme.dart';
@@ -63,12 +65,14 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  int _drawerIndex = 0;
+
   static List<Widget> _widgetOptions = <Widget>[
     Search(),
     SearchRhyme(),
     RandomScreen(),
+    Favourites(),
+    IndexScreen(),
   ];
 
   @override
@@ -92,6 +96,7 @@ class _DashboardState extends State<Dashboard> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _drawerIndex = 0;
     });
   }
 
@@ -99,7 +104,12 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      drawer: ADDrawer(),
+      drawer: ADDrawer(selectedItem: _drawerIndex, onTapCallback: (val) {
+        setState(() {
+          _drawerIndex = val;
+          _selectedIndex = -1;
+        });
+      }),
       appBar: AppBar(
         title: const Text('ADकोश'),
         actions: [
@@ -116,7 +126,7 @@ class _DashboardState extends State<Dashboard> {
         ],
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: _widgetOptions.elementAt(_drawerIndex > 0 ? _drawerIndex : _selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -133,8 +143,11 @@ class _DashboardState extends State<Dashboard> {
             label: 'र्‍याण्डम',
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        currentIndex: _selectedIndex < 0 ? 0 : _selectedIndex,
+        selectedItemColor: _selectedIndex < 0 ? Colors.grey[100] : Colors.amber[800],
+        unselectedItemColor: _selectedIndex < 0 ? Colors.grey[100] : Colors.white,
+        selectedFontSize: _selectedIndex < 0 ? 12 : 14,
+        type: BottomNavigationBarType.fixed,
         onTap: _onItemTapped,
       ),
     );

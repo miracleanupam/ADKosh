@@ -1,19 +1,20 @@
-import 'package:adkosh/screens/favorites.dart';
-import 'package:adkosh/screens/index.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 
 class ADDrawer extends StatefulWidget {
-  const ADDrawer({super.key});
+  final Function onTapCallback;
+  final int selectedItem;
+
+  const ADDrawer({super.key, required this.selectedItem, required this.onTapCallback});
 
   @override
   State<ADDrawer> createState() => _ADDrawerState();
 }
 
 class _ADDrawerState extends State<ADDrawer> {
-  String currentSelection = "";
+  int currentSelection = 0;
   @override
   void initState() {
+    currentSelection = widget.selectedItem;
     super.initState();
   }
 
@@ -36,14 +37,13 @@ class _ADDrawerState extends State<ADDrawer> {
             'फेभरेट शब्दहरु',
             style: TextStyle(fontSize: 20),
           ),
-          selected: currentSelection == 'favs',
+          selected: currentSelection == 3,
           onTap: () {
             setState(() {
-              currentSelection = "favs";
+              currentSelection = 3;
             });
+            widget.onTapCallback(3);
             Navigator.pop(context);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Favourites()));
           },
         ),
         Divider(),
@@ -53,14 +53,13 @@ class _ADDrawerState extends State<ADDrawer> {
             'सङ्केतसूची',
             style: TextStyle(fontSize: 20),
           ),
-          selected: currentSelection == 'idxs',
+          selected: currentSelection == 4,
           onTap: () {
             setState(() {
-              currentSelection = "idxs";
+              currentSelection = 4;
             });
+            widget.onTapCallback(4);
             Navigator.pop(context);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => IndexScreen()));
           },
         ),
         Divider(),

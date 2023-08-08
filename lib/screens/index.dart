@@ -153,36 +153,33 @@ class IndexScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("सङ्केतसूची"),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.separated(
-              itemCount: idx.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Row(
-                    children: [
-                      Expanded(child: Text(idx[index][0], textAlign: TextAlign.center, style: TextStyle(fontSize: 20)),),
-                      // VerticalDivider(width: 20,),
-                      Expanded(child: Text(idx[index][1], textAlign: TextAlign.start, style: TextStyle(fontSize: 20)),),
-                    ]
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return Divider(
-                  indent: 8,
-                  endIndent: 8,
-                );
-              },
-            ),
-          )
-        ],
-      ),
+    return Material(
+      child: Column(
+          children: [
+            Expanded(
+              child: ListView.separated(
+                itemCount: idx.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Row(
+                      children: [
+                        Expanded(child: Text(idx[index][0], textAlign: TextAlign.center, style: TextStyle(fontSize: 20)),),
+                        // VerticalDivider(width: 20,),
+                        Expanded(child: Text(idx[index][1], textAlign: TextAlign.start, style: TextStyle(fontSize: 20)),),
+                      ]
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return Divider(
+                    indent: 8,
+                    endIndent: 8,
+                  );
+                },
+              ),
+            )
+          ],
+        ),
     );
   }
 }
