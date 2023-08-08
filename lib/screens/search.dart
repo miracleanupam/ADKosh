@@ -69,10 +69,10 @@ class _SearchState extends State<Search> {
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'यहाँ शब्दको अर्थ खोज्नुहोस्...',
+              suffixIcon: Icon(Icons.search)
             ),
             style: TextStyle(fontSize: 20),
             controller: searchController,
-            // onSubmitted: ((value) => _handleSubmit()),
           ),
         ),
         items.length > 0
