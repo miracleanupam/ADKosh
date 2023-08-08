@@ -136,7 +136,7 @@ class _MeaningState extends State<Meaning> {
     } else if (etymology == '') {
       return grammar;
     } else {
-      return '${grammar} | ${etymology}';
+      return '$grammar | $etymology';
     }
   }
 

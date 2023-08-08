@@ -72,7 +72,7 @@ class _SearchRhymeState extends State<SearchRhyme> {
               suffixIcon: Tooltip(
                 key: tooltipkey,
                 triggerMode: TooltipTriggerMode.tap,
-                showDuration: Duration(seconds: 10),
+                showDuration: Duration(seconds: 30),
                 message: '% - शून्य वा बढी वर्ण वा मात्रा \n _ - एउटा वर्ण वा मात्रा \n उदाहरण: \n %ाम - राम, आराम, बिराम, अछाम, इनाम ... \n म% - मल, मकल, मकुन्द, मखमा ... \n र_म - रकम, राम, रसम, रोम ...',
                 child: Icon(Icons.info_outline),)
             ),
