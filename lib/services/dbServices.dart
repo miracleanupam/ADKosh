@@ -52,7 +52,7 @@ class DBService {
         ? await db
             .rawQuery('select * from corpora where word like ? limit 2000', [term.isEmpty ? '%' : term])
         : await db.rawQuery(
-            "select * from corpora where replace(replace(word, 'ी', 'ि'), 'ू', 'ु') like ? order by length(word) asc limit 2000", ['$term%']);
+            "select * from corpora where replace(replace(word, 'ी', 'ि'), 'ू', 'ु') like ? limit 2000", ['$term%']);
 
     return List.generate(list.length, (index) {
       return Corpora(
