@@ -45,13 +45,14 @@ class DBService {
   }
 
   Future<List<Corpora>> getWordSearchList({term = '', rhymes = false}) async {
+    term = rhymes ? term.replaceAll('ी', 'ि').replaceAll('ू', 'ु') : term;
     Database db = await instance.database;
 
     List<Map<String, dynamic>> list = rhymes
         ? await db
             .rawQuery('select * from corpora where word like ? limit 2000', [term.isEmpty ? '%' : term])
         : await db.rawQuery(
-            'select * from corpora where word like ? limit 2000', ['$term%']);
+            "select * from corpora where replace(replace(word, 'ी', 'ि'), 'ू', 'ु') like ? order by length(word) asc limit 2000", ['$term%']);
 
     return List.generate(list.length, (index) {
       return Corpora(
