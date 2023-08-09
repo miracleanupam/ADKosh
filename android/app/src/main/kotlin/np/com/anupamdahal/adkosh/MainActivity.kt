@@ -1,4 +1,4 @@
-package com.example.adkosh
+package np.com.anupamdahal.adkosh
 
 import io.flutter.embedding.android.FlutterActivity
 
