@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:adkosh/models/artha.dart';
 import 'package:adkosh/models/corpora.dart';
 import 'package:adkosh/models/random.dart';
+import 'package:adkosh/models/udaharan.dart';
 import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -75,6 +76,17 @@ class DBService {
           etymology: list[index]['etymology'] ?? '',
           senses: jsonDecode(list[index]['senses'].replaceAll("'", '"')),
           corpora_id: list[index]['corpora_id']);
+    });
+  }
+
+  Future<List<Udaharan>> getWordUsageExamples({corpora_id}) async {
+    Database db = await instance.database;
+
+    List<Map<String, dynamic>> list = await db
+        .rawQuery('select * from examples where corpora_id == ?', [corpora_id]);
+
+    return List.generate(list.length, (index) {
+      return Udaharan(id: list[index]['id'], corpora_id: list[index]['corpora_id'], usage: list[index]['usage']);
     });
   }
 

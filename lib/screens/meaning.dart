@@ -1,5 +1,6 @@
 import 'package:adkosh/models/artha.dart';
 import 'package:adkosh/models/random.dart';
+import 'package:adkosh/models/udaharan.dart';
 import 'package:adkosh/services/dbServices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +18,8 @@ class Meaning extends StatefulWidget {
 }
 
 class _MeaningState extends State<Meaning> {
-  List<Artha> items = [];
+  List<Artha> arthaItems = [];
+  List<Udaharan> udaharanItems = [];
   bool favourite = false;
   int removeFromFavs = 0;
 
@@ -30,13 +32,14 @@ class _MeaningState extends State<Meaning> {
 
   void initializeProcess() async {
     widget.random ? retrieveRandomWordMeanings() : retrieveMeanings();
+    retrieveExampleUsage();
   }
 
   retrieveMeanings() async {
     List<Artha> res =
         await DBService.instance.getWordMeanings(corpora_id: widget.id);
     setState(() {
-      items = res;
+      arthaItems = res;
     });
     doFavoriteStuff();
   }
@@ -50,15 +53,27 @@ class _MeaningState extends State<Meaning> {
 
   void retrieveRandomWordMeanings() async {
     Random res = await DBService.instance.getRandomWord();
+    
 
     widget.word = res.word;
     widget.id = res.corpora_id;
 
+    retrieveExampleUsage();
+
     setState(() {
-      items = res.arthas;
+      arthaItems = res.arthas;
       // favourite = fav;
     });
     doFavoriteStuff();
+  }
+
+  void retrieveExampleUsage() async {
+    List<Udaharan> res =
+        await DBService.instance.getWordUsageExamples(corpora_id: widget.id);
+
+    setState(() {
+      udaharanItems = res;
+    });
   }
 
   void toggleFavourite() async {
@@ -102,11 +117,11 @@ class _MeaningState extends State<Meaning> {
 
   String buildShareText() {
     String textToReturn = widget.word + "\n";
-    for (var i = 0; i < items.length; i++) {
-      textToReturn +=
-          getGrammarEtymologyString(items[i].grammar, items[i].etymology);
+    for (var i = 0; i < arthaItems.length; i++) {
+      textToReturn += getGrammarEtymologyString(
+          arthaItems[i].grammar, arthaItems[i].etymology);
       textToReturn += '\n';
-      textToReturn += items[i].senses.join("\n");
+      textToReturn += arthaItems[i].senses.join("\n");
       textToReturn += "\n";
     }
     return textToReturn;
@@ -148,6 +163,89 @@ class _MeaningState extends State<Meaning> {
     );
   }
 
+  Widget getCustomWidget() {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            ListView.separated(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: arthaItems.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      getGrammarEtymologyString(arthaItems[index].grammar,
+                          arthaItems[index].etymology),
+                      style: Theme.of(context).textTheme.displayMedium,
+                    ),
+                  ),
+                  subtitle: Column(
+                    children: arthaItems[index]
+                        .senses
+                        .map((e) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SelectableText(
+                                e,
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.displaySmall,
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider(
+                  thickness: 2,
+                  indent: 5,
+                  endIndent: 5,
+                );
+              },
+            ),
+            if (udaharanItems.isNotEmpty) Padding(
+              padding: const EdgeInsets.fromLTRB(0.0, 24.0, 0.0, 8.0),
+              child: Divider(),
+            ),
+            if (udaharanItems.isNotEmpty) getUdaharanWidget(),
+            if (udaharanItems.isNotEmpty) getExamples()
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getUdaharanWidget() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24.0, 8.0, 8.0, 8.0),
+      child: Align(alignment: Alignment.centerLeft, child: SelectableText("उदाहरणहरु:", textAlign: TextAlign.justify, style: Theme.of(context).textTheme.displayMedium)),
+    );
+  }
+
+  Widget getExamples() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+      child: ListView.separated(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
+              child: SelectableText(
+                "->   ${udaharanItems[index].usage}",
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return Divider();
+          },
+          itemCount: udaharanItems.length),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,44 +265,7 @@ class _MeaningState extends State<Meaning> {
                     style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
-                Expanded(
-                    child: ListView.separated(
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          getGrammarEtymologyString(
-                              items[index].grammar, items[index].etymology),
-                          style: Theme.of(context).textTheme.displayMedium,
-                        ),
-                      ),
-                      subtitle: Column(
-                        children: items[index]
-                            .senses
-                            .map((e) => Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SelectableText(
-                                    e,
-                                    textAlign: TextAlign.center,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall,
-                                  ),
-                                ))
-                            .toList(),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      thickness: 2,
-                      indent: 5,
-                      endIndent: 5,
-                    );
-                  },
-                )),
+                getCustomWidget(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
