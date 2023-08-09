@@ -1,6 +1,7 @@
 import 'package:adkosh/models/corpora.dart';
 import 'package:adkosh/screens/meaning.dart';
 import 'package:adkosh/services/dbServices.dart';
+import 'package:adkosh/widgets/not_found.dart';
 import 'package:flutter/material.dart';
 
 class SearchRhyme extends StatefulWidget {
@@ -67,15 +68,16 @@ class _SearchRhymeState extends State<SearchRhyme> {
           padding: const EdgeInsets.all(8.0),
           child: TextField(
             decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'यहाँ शब्दको अर्थ खोज्नुहोस्...',
-              suffixIcon: Tooltip(
-                key: tooltipkey,
-                triggerMode: TooltipTriggerMode.tap,
-                showDuration: Duration(seconds: 30),
-                message: '% - शून्य वा बढी वर्ण वा मात्रा \n _ - एउटा वर्ण वा मात्रा \n उदाहरण: \n %ाम - राम, आराम, बिराम, अछाम, इनाम ... \n म% - मल, मकल, मकुन्द, मखमा ... \n र_म - रकम, राम, रसम, रोम ...',
-                child: Icon(Icons.info_outline),)
-            ),
+                border: OutlineInputBorder(),
+                hintText: 'यहाँ शब्दको अर्थ खोज्नुहोस्...',
+                suffixIcon: Tooltip(
+                  key: tooltipkey,
+                  triggerMode: TooltipTriggerMode.tap,
+                  showDuration: Duration(seconds: 30),
+                  message:
+                      '% - शून्य वा बढी वर्ण वा मात्रा \n _ - एउटा वर्ण वा मात्रा \n उदाहरण: \n %ाम - राम, आराम, बिराम, अछाम, इनाम ... \n म% - मल, मकल, मकुन्द, मखमा ... \n र_म - रकम, राम, रसम, रोम ...',
+                  child: Icon(Icons.info_outline),
+                )),
             style: TextStyle(fontSize: 20),
             controller: searchController,
           ),
@@ -108,7 +110,7 @@ class _SearchRhymeState extends State<SearchRhyme> {
                   },
                 ),
               )
-            : Placeholder()
+            : NoResults()
       ],
     );
   }

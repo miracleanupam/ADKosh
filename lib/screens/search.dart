@@ -1,6 +1,7 @@
 import 'package:adkosh/models/corpora.dart';
 import 'package:adkosh/screens/meaning.dart';
 import 'package:adkosh/services/dbServices.dart';
+import 'package:adkosh/widgets/not_found.dart';
 import 'package:flutter/material.dart';
 
 class Search extends StatefulWidget {
@@ -23,9 +24,7 @@ class _SearchState extends State<Search> {
   }
 
   void setInitialItems() async {
-
     List<Corpora> res = await DBService.instance.getWordSearchList(term: '');
-
 
     res.length > 0
         ? setState(() {
@@ -43,8 +42,8 @@ class _SearchState extends State<Search> {
   }
 
   void _printLatestValue() async {
-    List<Corpora> res =
-        await DBService.instance.getWordSearchList(term: searchController.text.trim());
+    List<Corpora> res = await DBService.instance
+        .getWordSearchList(term: searchController.text.trim());
 
     res.length > 0
         ? setState(() {
@@ -67,10 +66,9 @@ class _SearchState extends State<Search> {
           padding: const EdgeInsets.all(8.0),
           child: TextField(
             decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'यहाँ शब्दको अर्थ खोज्नुहोस्...',
-              suffixIcon: Icon(Icons.search)
-            ),
+                border: OutlineInputBorder(),
+                hintText: 'यहाँ शब्दको अर्थ खोज्नुहोस्...',
+                suffixIcon: Icon(Icons.search)),
             style: TextStyle(fontSize: 20),
             controller: searchController,
           ),
@@ -82,7 +80,10 @@ class _SearchState extends State<Search> {
                   itemBuilder: (context, index) {
                     return ListTile(
                       // tileColor: index.isEven || index == 0 ? Colors.grey[300] : Colors.white,
-                      title: Text(items[index].word, style: TextStyle(fontSize: 20),),
+                      title: Text(
+                        items[index].word,
+                        style: TextStyle(fontSize: 20),
+                      ),
                       onTap: () {
                         Navigator.push(
                             context,
@@ -94,11 +95,14 @@ class _SearchState extends State<Search> {
                     );
                   },
                   separatorBuilder: (context, index) {
-                    return Divider(indent: 8, endIndent: 8,);
+                    return Divider(
+                      indent: 8,
+                      endIndent: 8,
+                    );
                   },
                 ),
               )
-            : Placeholder()
+            : NoResults()
       ],
     );
   }

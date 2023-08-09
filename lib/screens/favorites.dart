@@ -1,6 +1,7 @@
 import 'package:adkosh/models/corpora.dart';
 import 'package:adkosh/screens/meaning.dart';
 import 'package:adkosh/services/dbServices.dart';
+import 'package:adkosh/widgets/not_found.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -81,7 +82,7 @@ class _FavouritesState extends State<Favourites> {
                       },
                     ),
                   )
-                : Placeholder()
+                : NoResults()
           ],
         ),
     );
