@@ -53,7 +53,6 @@ class _MeaningState extends State<Meaning> {
 
   void retrieveRandomWordMeanings() async {
     Random res = await DBService.instance.getRandomWord();
-    
 
     widget.word = res.word;
     widget.id = res.corpora_id;
@@ -205,10 +204,11 @@ class _MeaningState extends State<Meaning> {
                 );
               },
             ),
-            if (udaharanItems.isNotEmpty) Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 24.0, 0.0, 8.0),
-              child: Divider(),
-            ),
+            if (udaharanItems.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 24.0, 0.0, 8.0),
+                child: Divider(),
+              ),
             if (udaharanItems.isNotEmpty) getUdaharanWidget(),
             if (udaharanItems.isNotEmpty) getExamples()
           ],
@@ -220,7 +220,11 @@ class _MeaningState extends State<Meaning> {
   Widget getUdaharanWidget() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(24.0, 8.0, 8.0, 8.0),
-      child: Align(alignment: Alignment.centerLeft, child: SelectableText("उदाहरणहरु:", textAlign: TextAlign.justify, style: Theme.of(context).textTheme.displayMedium)),
+      child: Align(
+          alignment: Alignment.centerLeft,
+          child: SelectableText("उदाहरणहरु:",
+              textAlign: TextAlign.justify,
+              style: Theme.of(context).textTheme.displayMedium)),
     );
   }
 
@@ -246,6 +250,32 @@ class _MeaningState extends State<Meaning> {
     );
   }
 
+  Widget getScaffoldBody() {
+    return Column(
+      children: [
+        // SelectableText('${widget.id}'),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
+          child: SelectableText(
+            '${widget.word}',
+            style: Theme.of(context).textTheme.displayLarge,
+          ),
+        ),
+        getCustomWidget(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            favouriteButton(),
+            if (widget.random) shuffleButton(),
+            shareButton(),
+          ],
+        )
+        // if (widget.random) shuffleButton(),
+        // favouriteButton(),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -254,33 +284,13 @@ class _MeaningState extends State<Meaning> {
             : AppBar(
                 title: Text('अगाडिको'),
               ),
-        body: WillPopScope(
-            child: Column(
-              children: [
-                // SelectableText('${widget.id}'),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
-                  child: SelectableText(
-                    '${widget.word}',
-                    style: Theme.of(context).textTheme.displayLarge,
-                  ),
-                ),
-                getCustomWidget(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    favouriteButton(),
-                    if (widget.random) shuffleButton(),
-                    shareButton(),
-                  ],
-                )
-                // if (widget.random) shuffleButton(),
-                // favouriteButton(),
-              ],
-            ),
-            onWillPop: () async {
-              Navigator.pop(context, removeFromFavs);
-              return false;
-            }));
+        body: widget.random
+            ? getScaffoldBody()
+            : WillPopScope(
+                child: getScaffoldBody(),
+                onWillPop: () async {
+                  Navigator.pop(context, removeFromFavs);
+                  return false;
+                }));
   }
 }
