@@ -64,6 +64,22 @@ class _ADDrawerState extends State<ADDrawer> {
         ),
         Divider(),
         ListTile(
+          leading: Icon(Icons.info),
+          title: Text(
+            'आ्याप बारे',
+            style: TextStyle(fontSize: 20),
+          ),
+          selected: currentSelection == 5,
+          onTap: () {
+            setState(() {
+              currentSelection = 5;
+            });
+            widget.onTapCallback(5);
+            Navigator.pop(context);
+          },
+        ),
+        Divider(),
+        ListTile(
           title: Text('अझ धेरै छिट्टै आउँदैछ!!',
               style: TextStyle(
                 fontSize: 20,

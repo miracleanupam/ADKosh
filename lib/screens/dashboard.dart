@@ -1,3 +1,4 @@
+import 'package:adkosh/screens/about_app.dart';
 import 'package:adkosh/screens/drawer.dart';
 import 'package:adkosh/screens/favorites.dart';
 import 'package:adkosh/screens/index.dart';
@@ -25,6 +26,7 @@ class _DashboardState extends State<Dashboard> {
     RandomScreen(),
     Favourites(),
     IndexScreen(),
+    AboutScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -69,8 +71,8 @@ class _DashboardState extends State<Dashboard> {
             label: 'खोज',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.music_note_outlined),
-            label: 'अन्त्यानुप्रास',
+            icon: Icon(Icons.zoom_in),
+            label: 'खोज+',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shuffle),

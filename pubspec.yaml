@@ -38,6 +38,8 @@ dependencies:
   sqflite: ^2.2.8+4
   path: ^1.8.3
   share_plus: ^7.0.2
+  url_launcher: ^6.1.12
+  font_awesome_flutter: ^10.5.0
 
 dev_dependencies:
   flutter_test:
@@ -84,12 +86,6 @@ flutter:
   assets:
     - assets/db/shabda.sqlite3
 
-  fonts:
-    - family: LibreBaskerville
-      fonts:
-        - asset: assets/fonts/LibreBaskerville-Regular.ttf
-        - asset: assets/fonts/LibreBaskerville-Regular.ttf
-        - asset: assets/fonts/LibreBaskerville-Regular.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
