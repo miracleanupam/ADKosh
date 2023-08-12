@@ -35,7 +35,7 @@ A Nepali Dictionary (एउटा नेपाली शब्दकोश)
 * And so much more
 
 ## Getting Started
-Install the APK package from [here](https://www.anupamdahal.com.np/tech). And Enjoy
+Install the latest APK package from Releases Section of this repository. And Enjoy
 
 ## To build it yourself
 1. Get the Flutter Developement Environment setup. There's lots of resource available online for this.
